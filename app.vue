@@ -1,6 +1,7 @@
+<script setup>
+import 'normalize.css';
+</script>
+
 <template>
-  <div>
-    <NuxtRouteAnnouncer />
-    <NuxtWelcome />
-  </div>
+  <NuxtPage />
 </template>
