@@ -29,6 +29,11 @@ const tabs = [
 .tabs {
   display: flex;
 
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 10px;
+  }
+
   &__button {
     flex: 1;
     text-align: center;
@@ -36,7 +41,7 @@ const tabs = [
     letter-spacing: 0.5px;
     font-weight: 600;
     cursor: pointer;
-    padding: 15px;
+    padding: 18px 0;
     background-color: #fff;
     border: 1px solid #dfe5ec;
     transition: all 0.3s ease;
@@ -45,12 +50,22 @@ const tabs = [
       border: 1px solid #dfe5ec;
       border-right: 0;
       border-radius: 5px 0 0 5px;
+
+      @media (max-width: 480px) {
+        border-radius: 5px;
+        border-right: 1px solid #dfe5ec;
+      }
     }
 
     &:last-child {
       border: 1px solid #dfe5ec;
       border-left: 0;
       border-radius: 0 5px 5px 0;
+
+      @media (max-width: 480px) {
+        border-radius: 5px;
+        border-left: 1px solid #dfe5ec;
+      }
     }
 
     &:hover,
@@ -60,6 +75,11 @@ const tabs = [
       background-color: #2196f3;
       color: white;
       border-color: #2196f3;
+    }
+
+    @media (max-width: 480px) {
+      border: 1px solid #dfe5ec;
+      border-radius: 5px;
     }
   }
 }

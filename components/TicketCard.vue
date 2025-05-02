@@ -90,6 +90,10 @@ const getStopsText = (stops: string[]) => {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
+
+    @media (max-width: 480px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   &__title {
@@ -104,6 +108,14 @@ const getStopsText = (stops: string[]) => {
     font-weight: 600;
     font-size: 14px;
     line-height: 1.5;
+  }
+
+  &__column {
+    @media (max-width: 480px) {
+      &:nth-child(3n) {
+        grid-column: 1 / -1;
+      }
+    }
   }
 }
 </style>

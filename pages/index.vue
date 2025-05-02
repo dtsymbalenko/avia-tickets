@@ -72,11 +72,19 @@ startLoadingTickets()
   display: flex;
   align-items: flex-start;
   gap: 20px;
-  margin-top: 30px;
+  margin-top: 28px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 
   &__filter {
     max-width: 232px;
     width: 100%;
+
+    @media (max-width: 768px) {
+      max-width: 100%;
+    }
   }
 
   &__tickets {
@@ -84,6 +92,10 @@ startLoadingTickets()
     display: flex;
     flex-direction: column;
     gap: 20px;
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
   }
 
   &__empty {
@@ -95,7 +107,7 @@ startLoadingTickets()
   background-color: #2196f3;
   border-radius: 5px;
   color: #fff;
-  padding: 10px 20px;
+  padding: 18px 20px;
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 0.5px;
