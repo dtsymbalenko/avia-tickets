@@ -1,3 +1,21 @@
+<script setup lang="ts">
+
+const {
+  startLoadingTickets,
+  loading,
+  activeFilters,
+  activeTab,
+  visibleTickets,
+  loadMore
+} = useTickets()
+
+const updateActiveFilters = (newFilters: number[]) => {
+  activeFilters.value = newFilters
+}
+
+startLoadingTickets()
+</script>
+
 <template>
   <main class="main">
     <NuxtLink to="/" class="logo">
@@ -5,13 +23,14 @@
     </NuxtLink>
 
     <div class="container">
-      <Filters class="container__filter" />
+      <Filters class="container__filter" v-model:activeFilters="activeFilters" @update:activeFilters="updateActiveFilters" />
 
       <div class="container__tickets">
-        <Tabs />
-        <div v-if="loading">Loading...</div>
+        <Tabs :activeTab="activeTab" @update:activeTab="(val) => activeTab = val" />
+        <div v-if="loading">Загрузка билетов...</div>
 
-        <TicketCard />
+        <TicketCard v-for="ticket in visibleTickets" :key="ticket.price + ticket.carrier + Math.random()"
+          :ticket="ticket" />
 
         <button v-if="!loading" @click="loadMore" class="load-btn">
           Завантажити ще 5 квитків
