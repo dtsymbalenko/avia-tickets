@@ -1,3 +1,12 @@
+@use 'fonts';
+@use 'variables';
+
 * {
   box-sizing: border-box;
+}
+
+body {
+  background-color: variables.$background-color;
+  font-family: 'Open Sans', sans-serif;
+  color: #333;
 }
