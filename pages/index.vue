@@ -57,4 +57,21 @@
     gap: 20px;
   }
 }
+
+.load-btn {
+  background-color: #2196f3;
+  border-radius: 5px;
+  color: #fff;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #0c7cd5;
+  }
+}
 </style>
