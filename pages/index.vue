@@ -7,7 +7,7 @@
   </main>
 </template>
 
-<style>
+<style lang="scss" scoped>
 .container {
   max-width: 786px;
   width: 100%;
@@ -19,10 +19,10 @@
   margin: 0 auto;
   display: block;
   width: 82px;
-}
 
-.logo__img {
-  width: 100%;
-  height: auto;
+  &__img {
+    width: 100%;
+    height: auto;
+  }
 }
 </style>
