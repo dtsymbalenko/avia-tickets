@@ -2,11 +2,11 @@
 import { ActiveTab } from '~/types/ticket';
 
 defineProps<{
-  activeTab: string
+  activeTab: ActiveTab
 }>()
 
 const emit = defineEmits<{
-  (e: 'update:activeTab', value: string): void
+  (e: 'update:activeTab', value: ActiveTab): void
 }>()
 
 const tabs = [

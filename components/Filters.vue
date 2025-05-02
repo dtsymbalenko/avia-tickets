@@ -7,7 +7,16 @@ const emit = defineEmits<{
   (e: 'update:activeFilters', value: number[]): void
 }>()
 
-const localFilters = ref<number[]>([...props.activeFilters])
+const options = [
+  { label: 'Без пересадок', value: 0 },
+  { label: '1 пересадка', value: 1 },
+  { label: '2 пересадки', value: 2 },
+  { label: '3 пересадки', value: 3 }
+]
+
+const localFilters = ref<number[]>(options.map(option => option.value))
+
+emit('update:activeFilters', localFilters.value)
 
 const toggleFilter = ({ value, checked }: { value: number; checked: boolean }) => {
   if (checked) {
@@ -17,6 +26,10 @@ const toggleFilter = ({ value, checked }: { value: number; checked: boolean }) =
     if (index > -1) {
       localFilters.value.splice(index, 1)
     }
+  }
+
+  if (localFilters.value.length === 0) {
+    localFilters.value = options.map(option => option.value)
   }
 
   emit('update:activeFilters', localFilters.value)
@@ -30,13 +43,6 @@ const toggleAllFilters = (checked: boolean) => {
   }
   emit('update:activeFilters', localFilters.value)
 }
-
-const options = [
-  { label: 'Без пересадок', value: 0 },
-  { label: '1 пересадка', value: 1 },
-  { label: '2 пересадки', value: 2 },
-  { label: '3 пересадки', value: 3 }
-]
 </script>
 
 <template>
@@ -44,7 +50,8 @@ const options = [
     <h2 class="filters__title">Кількість пересадок</h2>
 
     <Checkbox 
-      label="Всі" 
+      label="Всі"
+      :value="4"
       :checked="localFilters.length === options.length" 
       @change="toggleAllFilters($event.checked)" 
     />

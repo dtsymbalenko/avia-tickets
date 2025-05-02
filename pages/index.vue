@@ -1,5 +1,6 @@
 <script setup lang="ts">
 
+
 const {
   startLoadingTickets,
   loading,
@@ -23,16 +24,19 @@ startLoadingTickets()
     </NuxtLink>
 
     <div class="container">
-      <Filters class="container__filter" v-model:activeFilters="activeFilters" @update:activeFilters="updateActiveFilters" />
+      <Filters class="container__filter" v-model:activeFilters="activeFilters"
+        @update:activeFilters="updateActiveFilters" />
 
       <div class="container__tickets">
         <Tabs :activeTab="activeTab" @update:activeTab="(val) => activeTab = val" />
-        <div v-if="loading">Загрузка билетов...</div>
+        <div v-if="loading">Loading...</div>
 
         <TicketCard v-for="ticket in visibleTickets" :key="ticket.price + ticket.carrier + Math.random()"
           :ticket="ticket" />
 
-        <button v-if="!loading" @click="loadMore" class="load-btn">
+        <h2 v-if="!visibleTickets.length && !loading" class="container__empty">Квитків не знайдено</h2>
+
+        <button v-if="!loading && visibleTickets.length > 0" @click="loadMore" class="load-btn">
           Завантажити ще 5 квитків
         </button>
       </div>
@@ -75,6 +79,10 @@ startLoadingTickets()
     display: flex;
     flex-direction: column;
     gap: 20px;
+  }
+
+  &__empty {
+    text-align: center;
   }
 }
 
