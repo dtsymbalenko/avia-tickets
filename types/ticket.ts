@@ -11,3 +11,9 @@ export interface Ticket {
   carrier: string;
   segments: Segment[];
 }
+
+export enum ActiveTab {
+  CHEAP = 'cheap',
+  FAST = 'fast',
+  OPTIMAL = 'optimal',
+}
