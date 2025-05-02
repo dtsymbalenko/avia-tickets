@@ -1,6 +1,4 @@
 <script setup lang="ts">
-
-
 const {
   startLoadingTickets,
   loading,
@@ -31,7 +29,7 @@ startLoadingTickets()
         <Tabs :activeTab="activeTab" @update:activeTab="(val) => activeTab = val" />
         <div v-if="loading">Loading...</div>
 
-        <TicketCard v-for="ticket in visibleTickets" :key="ticket.price + ticket.carrier + Math.random()"
+        <LazyTicketCard v-for="ticket in visibleTickets" :key="ticket.price + ticket.carrier + Math.random()"
           :ticket="ticket" />
 
         <h2 v-if="!visibleTickets.length && !loading" class="container__empty">Квитків не знайдено</h2>
@@ -99,7 +97,6 @@ startLoadingTickets()
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #0c7cd5;
-  }
+    background-color: #0c7cd5;}
 }
 </style>

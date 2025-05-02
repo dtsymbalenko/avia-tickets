@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue'
-import { ActiveTab, type Ticket } from '~/types/ticket'
+import { ActiveTab, type Ticket, type TicketApiResponse } from '~/types/ticket'
 
 export function useTickets() {
   const searchId = ref<string | null>(null)
@@ -22,7 +22,7 @@ export function useTickets() {
 
     try {
       const res = await fetch(`https://avs-backend.vercel.app/tickets?searchId=${searchId.value}`)
-      const data = await res.json()
+      const data: TicketApiResponse = await res.json()
       tickets.value.push(...data.tickets)
       if (!data.stop) {
         await fetchTickets()
@@ -39,31 +39,50 @@ export function useTickets() {
     await fetchTickets()
   }
 
-  const filteredTickets = computed(() => {
-    let result = [...tickets.value]
+  // const filteredTickets = computed(() => {
+  //   let result = [...tickets.value]
 
-    if (activeFilters.value.length) {
-      result = result.filter(ticket =>
+  //   if (activeFilters.value.length) {
+  //     result = result.filter(ticket =>
+  //       ticket.segments.every(segment => activeFilters.value.includes(segment.stops.length))
+  //     )
+  //   }
+
+  //   if (activeTab.value === ActiveTab.CHEAP) {
+  //     result.sort((a, b) => a.price - b.price)
+  //   } else if (activeTab.value === ActiveTab.FAST) {
+  //     result.sort((a, b) =>
+  //       a.segments.reduce((acc, s) => acc + s.duration, 0) -
+  //       b.segments.reduce((acc, s) => acc + s.duration, 0)
+  //     )
+  //   } else if (activeTab.value === ActiveTab.OPTIMAL) {
+  //     result.sort((a, b) =>
+  //       (a.price + a.segments.reduce((acc, s) => acc + s.duration, 0)) -
+  //       (b.price + b.segments.reduce((acc, s) => acc + s.duration, 0))
+  //     )
+  //   }
+
+  //   return result
+  // })
+  const filteredTickets = computed(() => {
+    return tickets.value
+      .filter(ticket =>
+        !activeFilters.value.length ||
         ticket.segments.every(segment => activeFilters.value.includes(segment.stops.length))
       )
-    }
-
-    if (activeTab.value === ActiveTab.CHEAP) {
-      result.sort((a, b) => a.price - b.price)
-    } else if (activeTab.value === ActiveTab.FAST) {
-      result.sort((a, b) =>
-        a.segments.reduce((acc, s) => acc + s.duration, 0) -
-        b.segments.reduce((acc, s) => acc + s.duration, 0)
-      )
-    } else if (activeTab.value === ActiveTab.OPTIMAL) {
-      result.sort((a, b) =>
-        (a.price + a.segments.reduce((acc, s) => acc + s.duration, 0)) -
-        (b.price + b.segments.reduce((acc, s) => acc + s.duration, 0))
-      )
-    }
-
-    return result
-  })
+      .sort((a, b) => {
+        if (activeTab.value === ActiveTab.CHEAP) {
+          return a.price - b.price;
+        } else if (activeTab.value === ActiveTab.FAST) {
+          return a.segments.reduce((acc, s) => acc + s.duration, 0) -
+                 b.segments.reduce((acc, s) => acc + s.duration, 0);
+        } else if (activeTab.value === ActiveTab.OPTIMAL) {
+          return (a.price + a.segments.reduce((acc, s) => acc + s.duration, 0)) -
+                 (b.price + b.segments.reduce((acc, s) => acc + s.duration, 0));
+        }
+        return 0;
+      });
+  });
 
   const visibleTickets = computed(() =>
     filteredTickets.value.slice(0, visibleCount.value)

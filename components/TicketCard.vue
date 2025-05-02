@@ -34,6 +34,7 @@ const getStopsText = (stops: string[]) => {
     <header class="ticket__header">
       <div class="ticket__price">{{ Intl.NumberFormat('uk-UA').format(ticket.price) }} ₴</div>
       <img class="ticket__carrier" :src="`https://pics.avs.io/99/36/${ticket.carrier}.png`" alt="airline" />
+      <NuxtImg class="ticket__carrier" :src="`https://pics.avs.io/99/36/${ticket.carrier}.png`" alt="airline" />
     </header>
 
 

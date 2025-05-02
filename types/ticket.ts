@@ -17,3 +17,8 @@ export enum ActiveTab {
   FAST = 'fast',
   OPTIMAL = 'optimal',
 }
+
+export interface TicketApiResponse {
+  tickets: Ticket[];
+  stop: boolean;
+}
