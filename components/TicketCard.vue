@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Ticket } from '~/types/ticket';
 
-const props = defineProps<{ ticket: Ticket }>()
+defineProps<{ ticket: Ticket }>()
 
 const formatDuration = (mins: number) => {
   const h = Math.floor(mins / 60)
