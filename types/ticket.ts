@@ -9,7 +9,7 @@ export interface Segment {
 export interface Ticket {
   price: number;
   carrier: string;
-  segments: Segment[];
+  segments: [Segment, Segment];
 }
 
 export enum ActiveTab {
