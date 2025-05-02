@@ -22,6 +22,15 @@ const toggleFilter = ({ value, checked }: { value: number; checked: boolean }) =
   emit('update:activeFilters', localFilters.value)
 }
 
+const toggleAllFilters = (checked: boolean) => {
+  if (checked) {
+    localFilters.value = options.map(option => option.value)
+  } else {
+    localFilters.value = []
+  }
+  emit('update:activeFilters', localFilters.value)
+}
+
 const options = [
   { label: 'Без пересадок', value: 0 },
   { label: '1 пересадка', value: 1 },
@@ -33,6 +42,12 @@ const options = [
 <template>
   <div class="filters">
     <h2 class="filters__title">Кількість пересадок</h2>
+
+    <Checkbox 
+      label="Всі" 
+      :checked="localFilters.length === options.length" 
+      @change="toggleAllFilters($event.checked)" 
+    />
 
     <Checkbox 
       v-for="option in options" 

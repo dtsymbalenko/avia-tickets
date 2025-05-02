@@ -44,7 +44,7 @@ startLoadingTickets()
 .main {
   max-width: 786px;
   width: 100%;
-  padding: 50px 16px;
+  padding: 40px 16px;
   margin: 0 auto;
 }
 
@@ -63,6 +63,7 @@ startLoadingTickets()
   display: flex;
   align-items: flex-start;
   gap: 20px;
+  margin-top: 30px;
 
   &__filter {
     max-width: 232px;
