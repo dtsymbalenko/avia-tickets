@@ -12,16 +12,16 @@ export function useTickets() {
   const visibleCount = ref(5)
 
   const fetchSearchId = async () => {
-    const res = await fetch('https://avs-backend.vercel.app/search')
+    const res = await fetch(`${API_BASE_URL}/search`)
     const data = await res.json()
     searchId.value = data.searchId
   }
 
-  const fetchTickets = async () => {
+  const fetchTickets = async (retryCount = 30) => {
     if (!searchId.value) return
 
     try {
-      const res = await fetch(`https://avs-backend.vercel.app/tickets?searchId=${searchId.value}`)
+      const res = await fetch(`${API_BASE_URL}/tickets?searchId=${searchId.value}`)
       const data: TicketApiResponse = await res.json()
       tickets.value.push(...data.tickets)
       if (!data.stop) {
@@ -30,7 +30,12 @@ export function useTickets() {
         loading.value = false
       }
     } catch (e) {
-      await fetchTickets()
+      if (retryCount > 0) {
+        await fetchTickets(retryCount - 1)
+      } else {
+        console.error('Failed to fetch tickets after multiple attempts:', e)
+        window.location.reload()
+      }
     }
   }
 
@@ -39,31 +44,6 @@ export function useTickets() {
     await fetchTickets()
   }
 
-  // const filteredTickets = computed(() => {
-  //   let result = [...tickets.value]
-
-  //   if (activeFilters.value.length) {
-  //     result = result.filter(ticket =>
-  //       ticket.segments.every(segment => activeFilters.value.includes(segment.stops.length))
-  //     )
-  //   }
-
-  //   if (activeTab.value === ActiveTab.CHEAP) {
-  //     result.sort((a, b) => a.price - b.price)
-  //   } else if (activeTab.value === ActiveTab.FAST) {
-  //     result.sort((a, b) =>
-  //       a.segments.reduce((acc, s) => acc + s.duration, 0) -
-  //       b.segments.reduce((acc, s) => acc + s.duration, 0)
-  //     )
-  //   } else if (activeTab.value === ActiveTab.OPTIMAL) {
-  //     result.sort((a, b) =>
-  //       (a.price + a.segments.reduce((acc, s) => acc + s.duration, 0)) -
-  //       (b.price + b.segments.reduce((acc, s) => acc + s.duration, 0))
-  //     )
-  //   }
-
-  //   return result
-  // })
   const filteredTickets = computed(() => {
     return tickets.value
       .filter(ticket =>
@@ -75,10 +55,10 @@ export function useTickets() {
           return a.price - b.price;
         } else if (activeTab.value === ActiveTab.FAST) {
           return a.segments.reduce((acc, s) => acc + s.duration, 0) -
-                 b.segments.reduce((acc, s) => acc + s.duration, 0);
+            b.segments.reduce((acc, s) => acc + s.duration, 0);
         } else if (activeTab.value === ActiveTab.OPTIMAL) {
           return (a.price + a.segments.reduce((acc, s) => acc + s.duration, 0)) -
-                 (b.price + b.segments.reduce((acc, s) => acc + s.duration, 0));
+            (b.price + b.segments.reduce((acc, s) => acc + s.duration, 0));
         }
         return 0;
       });
